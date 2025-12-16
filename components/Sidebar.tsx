@@ -1,15 +1,16 @@
 import React from 'react';
 import { View, Theme } from '../types';
-import { Car, Calculator, FileText, TrendingUp, Calculator as CalcIcon } from 'lucide-react';
+import { Car, Calculator, FileText, TrendingUp, Calculator as CalcIcon, X } from 'lucide-react';
 
 interface SidebarProps {
   currentView: View;
   onChangeView: (view: View) => void;
   onOpenCalculator: () => void;
+  onCloseSidebar?: () => void; // New prop for mobile
   theme: Theme;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView, onOpenCalculator, theme }) => {
+const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView, onOpenCalculator, onCloseSidebar, theme }) => {
   
   const menuItems = [
     { id: 'models', label: 'موديلات السيارات', icon: Car },
@@ -32,25 +33,32 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView, onOpenCalc
     }
   };
 
-  return (
-    <div className={`h-full flex flex-col py-6
-       ${theme === 'glass' ? 'bg-black/40 backdrop-blur-md border-l border-white/10' :
+  const containerClass = theme === 'glass' ? 'bg-black/80 backdrop-blur-xl border-l border-white/10' :
          theme === 'win10' ? 'bg-[#1e1e1e] border-l border-black' :
          theme === 'ios' ? 'bg-gray-50 border-l border-gray-200' :
-         'bg-black border-l border-gray-800'
-       }`}>
+         'bg-black border-l border-gray-800';
+
+  return (
+    <div className={`h-full flex flex-col py-6 w-64 ${containerClass}`}>
       
-      <div className="px-6 mb-8">
+      <div className="px-6 mb-8 flex justify-between items-center">
         <h1 className="text-2xl font-bold font-mono tracking-tighter bg-clip-text text-transparent bg-gradient-to-br from-white to-gray-400">
           Four Brothers
         </h1>
+        {/* Mobile Close Button */}
+        <button onClick={onCloseSidebar} className="md:hidden text-gray-400 hover:text-white">
+          <X size={24} />
+        </button>
       </div>
 
-      <nav className="flex-1 space-y-2">
+      <nav className="flex-1 space-y-2 overflow-y-auto">
         {menuItems.map((item) => (
           <button
             key={item.id}
-            onClick={() => onChangeView(item.id as View)}
+            onClick={() => {
+              onChangeView(item.id as View);
+              if (onCloseSidebar) onCloseSidebar();
+            }}
             className={`${btnBaseClass} ${getActiveClass(currentView === item.id)}`}
           >
             <item.icon size={24} className={currentView === item.id ? 'animate-pulse' : ''} />
@@ -61,7 +69,10 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView, onOpenCalc
         <div className="border-t border-gray-700 my-4 mx-4"></div>
 
         <button
-           onClick={onOpenCalculator}
+           onClick={() => {
+             onOpenCalculator();
+             if (onCloseSidebar) onCloseSidebar();
+           }}
            className={`${btnBaseClass} text-yellow-500 hover:bg-yellow-500/10`}
         >
            <CalcIcon size={24} />
@@ -69,7 +80,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView, onOpenCalc
         </button>
       </nav>
 
-      <div className="px-6 text-center text-xs opacity-40">
+      <div className="px-6 text-center text-xs opacity-40 mt-auto">
          v1.0.0
       </div>
     </div>

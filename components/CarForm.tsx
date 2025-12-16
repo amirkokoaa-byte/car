@@ -86,10 +86,6 @@ const CarForm: React.FC<CarFormProps> = ({ car, brands, onSave, onClose, onAddBr
     const { basePrice, downPayment, interestRate, years } = installment;
     const principal = basePrice - downPayment;
     if (principal <= 0) return 0;
-    
-    // Simple Interest Formula: (Principal + (Principal * Rate * Years)) / Months
-    // Adjust logic if needed (e.g., compound or flat rate per year)
-    // Assuming 'interestRate' is annual percentage flat rate.
     const totalInterest = principal * (interestRate / 100) * years;
     const totalAmount = principal + totalInterest;
     const monthly = totalAmount / (years * 12);
@@ -97,7 +93,6 @@ const CarForm: React.FC<CarFormProps> = ({ car, brands, onSave, onClose, onAddBr
     return Math.round(monthly);
   };
 
-  // Auto calculate when inputs change
   useEffect(() => {
     const calculated = calculateInstallment();
     setInstallment(prev => ({ ...prev, monthlyInstallment: calculated }));
@@ -126,26 +121,26 @@ const CarForm: React.FC<CarFormProps> = ({ car, brands, onSave, onClose, onAddBr
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
-      <div className={`relative w-full max-w-5xl h-[90vh] overflow-y-auto p-6 shadow-2xl flex flex-col gap-6
-         ${theme === 'glass' ? 'bg-slate-900/80 backdrop-blur-xl border border-white/10 text-white rounded-xl' :
+    <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/80 backdrop-blur-sm p-0 md:p-4 overflow-hidden">
+      <div className={`relative w-full md:max-w-5xl h-[95vh] md:h-[90vh] overflow-y-auto p-4 md:p-6 shadow-2xl flex flex-col gap-6 rounded-t-2xl md:rounded-xl
+         ${theme === 'glass' ? 'bg-slate-900/90 backdrop-blur-xl border border-white/10 text-white' :
            theme === 'win10' ? 'bg-[#1f1f1f] border-2 border-blue-600 text-white rounded-none' :
-           theme === 'ios' ? 'bg-white text-black rounded-3xl' :
-           'bg-gray-900 border border-gray-700 text-white rounded-lg'
+           theme === 'ios' ? 'bg-white text-black' :
+           'bg-gray-900 border border-gray-700 text-white'
          }`}>
         
         {/* Header */}
-        <div className="flex justify-between items-center border-b pb-4 border-gray-600">
-          <h2 className="text-2xl font-bold">{car ? 'تعديل سيارة' : 'إضافة سيارة جديدة'}</h2>
+        <div className="flex justify-between items-center border-b pb-4 border-gray-600 sticky top-0 bg-inherit z-10 pt-2">
+          <h2 className="text-xl md:text-2xl font-bold">{car ? 'تعديل سيارة' : 'إضافة سيارة جديدة'}</h2>
           <button onClick={onClose} className="p-2 hover:bg-red-500 rounded-full transition-colors text-white bg-red-600">
-            <X size={24} />
+            <X size={20} />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form onSubmit={handleSubmit} className="space-y-6 pb-20">
           
           {/* Section 1: Basic Info */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
              <div>
                <label className={labelClass}>الشركة المصنعة</label>
                <div className="flex gap-2">
@@ -198,7 +193,7 @@ const CarForm: React.FC<CarFormProps> = ({ car, brands, onSave, onClose, onAddBr
 
           {/* Section 2: Description */}
           <div className="grid grid-cols-1 gap-4">
-             <h3 className="text-xl text-blue-400 font-bold">وصف السيارة والمواصفات</h3>
+             <h3 className="text-lg md:text-xl text-blue-400 font-bold">وصف السيارة والمواصفات</h3>
              <textarea 
                value={description}
                onChange={(e) => setDescription(e.target.value)}
@@ -234,7 +229,7 @@ const CarForm: React.FC<CarFormProps> = ({ car, brands, onSave, onClose, onAddBr
 
           {/* Section 3: Pricing Categories */}
           <div>
-            <h3 className="text-xl text-green-400 font-bold mb-4">الفئات والأسعار (كاش)</h3>
+            <h3 className="text-lg md:text-xl text-green-400 font-bold mb-4">الفئات والأسعار (كاش)</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {categories.map((cat, idx) => (
                 <div key={idx} className={`p-4 rounded border ${theme === 'ios' ? 'bg-gray-50' : 'bg-white/5 border-gray-600'}`}>
@@ -262,14 +257,14 @@ const CarForm: React.FC<CarFormProps> = ({ car, brands, onSave, onClose, onAddBr
                 </div>
               ))}
               {categories.length < 10 && (
-                 <button type="button" onClick={addCategory} className="flex flex-col items-center justify-center border-2 border-dashed border-gray-600 rounded p-4 hover:border-blue-500 hover:text-blue-500 transition">
+                 <button type="button" onClick={addCategory} className="flex flex-col items-center justify-center border-2 border-dashed border-gray-600 rounded p-4 hover:border-blue-500 hover:text-blue-500 transition h-32 md:h-auto">
                    <Plus size={24} />
                    <span>أضف فئة</span>
                  </button>
               )}
             </div>
-            {/* Quick Helper: Select a category to fill installment base price */}
-            <div className="mt-4 flex items-center gap-2">
+            
+            <div className="mt-4 flex flex-col md:flex-row md:items-center gap-2">
               <label className="text-sm">تطبيق سعر الفئة على التقسيط:</label>
               <select 
                 className={inputClass} 
@@ -285,8 +280,8 @@ const CarForm: React.FC<CarFormProps> = ({ car, brands, onSave, onClose, onAddBr
           <div className="border-t border-gray-700 my-4"></div>
 
           {/* Section 4: Installment Calculator */}
-          <div className={`p-6 rounded-lg border ${theme === 'ios' ? 'bg-blue-50 border-blue-100' : 'bg-blue-900/20 border-blue-800'}`}>
-             <h3 className="text-xl text-blue-300 font-bold mb-4">أنظمة التقسيط</h3>
+          <div className={`p-4 md:p-6 rounded-lg border ${theme === 'ios' ? 'bg-blue-50 border-blue-100' : 'bg-blue-900/20 border-blue-800'}`}>
+             <h3 className="text-lg md:text-xl text-blue-300 font-bold mb-4">أنظمة التقسيط</h3>
              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                 <div>
                   <label className={labelClass}>سعر السيارة</label>
@@ -355,7 +350,7 @@ const CarForm: React.FC<CarFormProps> = ({ car, brands, onSave, onClose, onAddBr
 
           {/* Section 5: Notes */}
           <div>
-            <h3 className="text-xl font-bold mb-2">ملاحظات إضافية (أنظمة البنوك)</h3>
+            <h3 className="text-lg md:text-xl font-bold mb-2">ملاحظات إضافية</h3>
             <textarea 
                value={notes}
                onChange={(e) => setNotes(e.target.value)}
@@ -380,12 +375,8 @@ const CarForm: React.FC<CarFormProps> = ({ car, brands, onSave, onClose, onAddBr
              </div>
           </div>
           
-           {/* Required Papers - Per Car override or use global? 
-               Prompt says "Papers" is the 6th field globally, but also mentions "save in all fields". 
-               I'll add specific papers here just in case this car needs special docs.
-           */}
            <div>
-             <h3 className="text-xl font-bold mb-2">الأوراق المطلوبة (خاصة بهذه السيارة)</h3>
+             <h3 className="text-lg md:text-xl font-bold mb-2">الأوراق المطلوبة (خاص)</h3>
              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 {requiredPapers.map((line, idx) => (
                   <div key={idx} className="flex gap-2">
@@ -405,15 +396,14 @@ const CarForm: React.FC<CarFormProps> = ({ car, brands, onSave, onClose, onAddBr
              </div>
            </div>
 
-
-          {/* Actions */}
-          <div className="sticky bottom-0 bg-black/50 p-4 border-t border-gray-600 flex justify-end gap-4 backdrop-blur-md rounded-lg">
+          {/* Actions - Sticky Bottom */}
+          <div className="fixed md:sticky bottom-0 left-0 w-full bg-black/80 md:bg-black/50 p-4 border-t border-gray-600 flex justify-end gap-4 backdrop-blur-md rounded-none md:rounded-lg z-20">
              <button type="button" onClick={onClose} className="px-6 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition">
                إلغاء
              </button>
              <button type="submit" className="px-8 py-2 bg-blue-600 text-white font-bold rounded hover:bg-blue-500 shadow-lg flex items-center gap-2 transition">
                <Save size={20}/>
-               حفظ البيانات
+               حفظ
              </button>
           </div>
         </form>
