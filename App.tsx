@@ -9,6 +9,69 @@ import PriceAnalysis from './components/PriceAnalysis';
 import DocumentsManager from './components/DocumentsManager';
 import MathCalculator from './components/MathCalculator';
 
+// Sample data to show when the app is loaded for the first time
+const SAMPLE_CARS: Car[] = [
+  {
+    id: '1',
+    brand: 'هيونداي',
+    year: 2024,
+    name: 'توسان NX4',
+    description: 'سيارة عائلية رياضية متعددة الاستخدامات، تتميز بتصميم عصري وأداء قوي.',
+    descLines: ['محرك 1600 سي سي تيربو', 'قوة 180 حصان', 'ناقل حركة 7 سرعات', 'شاشة 10.25 بوصة', 'فتحة سقف بانوراما'],
+    categories: [
+      { id: 'c1', name: 'Smart', price: 1750000 },
+      { id: 'c2', name: 'Smart Plus', price: 1850000 },
+      { id: 'c3', name: 'Modern', price: 1950000 },
+      { id: 'c4', name: 'Premium', price: 2150000 }
+    ],
+    installment: { basePrice: 1750000, downPayment: 500000, interestRate: 15, years: 3, monthlyInstallment: 45000 },
+    isAvailable: true,
+    notes: 'شامل مصاريف الترخيص لسنة واحدة',
+    noteLines: ['تأمين شامل هدية', 'صيانة مجانية 10,000 كم'],
+    requiredPapers: [],
+    createdAt: Date.now()
+  },
+  {
+    id: '2',
+    brand: 'كيا',
+    year: 2024,
+    name: 'سبورتاج',
+    description: 'تصميم جريء ومقصورة داخلية واسعة مع أحدث تقنيات الأمان.',
+    descLines: ['محرك 1600 تيربو', 'شنطة كهرباء', 'كراسي كهرباء', 'نظام صوتي Harman Kardon'],
+    categories: [
+      { id: 'k1', name: 'LX', price: 1800000 },
+      { id: 'k2', name: 'EX', price: 1950000 },
+      { id: 'k3', name: 'Highline', price: 2100000 },
+      { id: 'k4', name: 'Topline', price: 2300000 }
+    ],
+    installment: { basePrice: 1800000, downPayment: 600000, interestRate: 14, years: 5, monthlyInstallment: 32000 },
+    isAvailable: true,
+    notes: '',
+    noteLines: [],
+    requiredPapers: [],
+    createdAt: Date.now() - 10000
+  },
+  {
+    id: '3',
+    brand: 'مرسيدس',
+    year: 2024,
+    name: 'C 180',
+    description: 'الفخامة والأداء في سيارة سيدان مدمجة.',
+    descLines: ['محرك 1500 سي سي تيربو', 'نظام MBUX', 'إضاءة محيطية', 'جنوط 18 بوصة'],
+    categories: [
+      { id: 'm1', name: 'Avantgarde', price: 3500000 },
+      { id: 'm2', name: 'Sport', price: 3750000 },
+      { id: 'm3', name: 'AMG', price: 4000000 }
+    ],
+    installment: { basePrice: 3500000, downPayment: 1500000, interestRate: 12, years: 4, monthlyInstallment: 65000 },
+    isAvailable: false,
+    notes: 'الحجز مسبق',
+    noteLines: ['استلام خلال 3 شهور'],
+    requiredPapers: [],
+    createdAt: Date.now() - 20000
+  }
+];
+
 const App: React.FC = () => {
   // --- State ---
   const [theme, setTheme] = useState<Theme>('dark');
@@ -18,7 +81,8 @@ const App: React.FC = () => {
   // --- Data (Persisted in LocalStorage) ---
   const [cars, setCars] = useState<Car[]>(() => {
     const saved = localStorage.getItem('fb_cars');
-    return saved ? JSON.parse(saved) : [];
+    // If no data found (e.g., new device or github pages), use SAMPLE_CARS
+    return saved ? JSON.parse(saved) : SAMPLE_CARS;
   });
 
   const [settings, setSettings] = useState<GlobalSettings>(() => {
