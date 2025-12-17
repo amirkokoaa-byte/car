@@ -1,3 +1,4 @@
+
 export type Theme = 'glass' | 'win10' | 'ios' | 'dark';
 
 export interface Category {
@@ -35,4 +36,4 @@ export interface GlobalSettings {
   documents: string[]; // Global documents list (10 items)
 }
 
-export type View = 'models' | 'loanCalc' | 'priceAnalysis' | 'documents';
+export type View = 'models' | 'loanCalc' | 'priceAnalysis' | 'documents' | 'installments' | 'comparison';

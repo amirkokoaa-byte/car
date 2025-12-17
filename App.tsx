@@ -8,6 +8,9 @@ import LoanCalculator from './components/LoanCalculator';
 import PriceAnalysis from './components/PriceAnalysis';
 import DocumentsManager from './components/DocumentsManager';
 import MathCalculator from './components/MathCalculator';
+import InstallmentScenarios from './components/InstallmentScenarios';
+import CarComparison from './components/CarComparison';
+import CarDetailsModal from './components/CarDetailsModal';
 import { Menu } from 'lucide-react';
 
 // Sample data to show when the app is loaded for the first time
@@ -79,6 +82,7 @@ const App: React.FC = () => {
   const [activeView, setActiveView] = useState<View>('models');
   const [showMathCalc, setShowMathCalc] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Mobile sidebar state
+  const [viewingCar, setViewingCar] = useState<Car | undefined>(undefined);
 
   // --- Data (Persisted in LocalStorage) ---
   const [cars, setCars] = useState<Car[]>(() => {
@@ -222,7 +226,16 @@ const App: React.FC = () => {
               onUpdateCar={handleUpdateCar}
               onDeleteCar={handleDeleteCar}
               onAddBrand={handleAddBrand}
+              onViewCar={setViewingCar}
             />
+          )}
+
+          {activeView === 'installments' && (
+            <InstallmentScenarios theme={theme} />
+          )}
+
+          {activeView === 'comparison' && (
+            <CarComparison cars={cars} theme={theme} />
           )}
 
           {activeView === 'loanCalc' && <LoanCalculator theme={theme} />}
@@ -232,9 +245,7 @@ const App: React.FC = () => {
                cars={cars} 
                brands={settings.brands} 
                theme={theme}
-               onCarClick={(car) => {
-                 alert(`Selected: ${car.brand} ${car.name}\nPrice: ${Math.min(...car.categories.map(c => c.price))} EGP`);
-               }}
+               onCarClick={setViewingCar}
              />
           )}
 
@@ -262,8 +273,16 @@ const App: React.FC = () => {
         </footer>
       </div>
 
-      {/* Popups */}
+      {/* Global Popups */}
       {showMathCalc && <MathCalculator onClose={() => setShowMathCalc(false)} theme={theme} />}
+      
+      {viewingCar && (
+        <CarDetailsModal 
+          car={viewingCar} 
+          onClose={() => setViewingCar(undefined)} 
+          theme={theme} 
+        />
+      )}
 
     </div>
   );

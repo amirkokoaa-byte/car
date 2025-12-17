@@ -16,16 +16,12 @@ const PriceAnalysis: React.FC<PriceAnalysisProps> = ({ cars, brands, onCarClick,
     ? cars 
     : cars.filter(c => c.brand === selectedBrand);
 
-  // Group by brand if 'all' is selected, or just show list
-  // The requirement says: "Separate each company... Hyundai Low/High, Mercedes Low/High"
-  
   const brandsToShow = selectedBrand === 'all' ? brands : [selectedBrand];
 
   const getBrandStats = (brandName: string) => {
     const brandCars = cars.filter(c => c.brand === brandName);
     if (brandCars.length === 0) return null;
 
-    // Determine price by lowest category price
     const sorted = [...brandCars].sort((a, b) => {
         const minA = Math.min(...a.categories.map(cat => cat.price || 999999999));
         const minB = Math.min(...b.categories.map(cat => cat.price || 999999999));

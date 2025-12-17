@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Theme } from '../types';
-import { Car, Calculator, FileText, TrendingUp, Calculator as CalcIcon, X } from 'lucide-react';
+import { Car, Calculator, FileText, TrendingUp, Calculator as CalcIcon, X, SplitSquareHorizontal, CreditCard } from 'lucide-react';
 
 interface SidebarProps {
   currentView: View;
@@ -14,6 +14,8 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView, onOpenCalc
   
   const menuItems = [
     { id: 'models', label: 'موديلات السيارات', icon: Car },
+    { id: 'installments', label: 'أنظمة التقسيط (سريع)', icon: CreditCard }, // New
+    { id: 'comparison', label: 'مقارنة سيارات', icon: SplitSquareHorizontal }, // New
     { id: 'loanCalc', label: 'حاسبة القروض', icon: Calculator },
     { id: 'priceAnalysis', label: 'أعلى وأقل سعر', icon: TrendingUp },
     { id: 'documents', label: 'الأوراق المطلوبة', icon: FileText },
