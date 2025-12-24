@@ -1,20 +1,9 @@
 
 export const INITIAL_BRANDS = [
-  'هيونداي',
-  'كيا',
-  'تويوتا',
-  'إم جي (MG)',
-  'هوندا',
-  'فولكس فاجن',
-  'بي واي دي (BYD)',
-  'جيلي',
-  'شيري',
-  'نيو (NIO)',
-  'مرسيدس',
-  'نيسان'
+  'Audi', 'BMW', 'Geely', 'Honda', 'Hyundai', 'Lada', 'Mercedes', 'Nissan', 'Toyota', 'Volkswagen'
 ];
 
-export const YEARS = Array.from({ length: 31 }, (_, i) => 2000 + i); // 2000 to 2030
+export const YEARS = Array.from({ length: 26 }, (_, i) => 2010 + i); // 2010 to 2035
 
 export const DEFAULT_DESC_LINES = 8;
 export const MAX_DESC_LINES = 28; 
