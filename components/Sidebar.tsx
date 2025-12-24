@@ -1,12 +1,13 @@
+
 import React from 'react';
 import { View, Theme } from '../types';
-import { Car, Calculator, FileText, TrendingUp, Calculator as CalcIcon, X, SplitSquareHorizontal, CreditCard } from 'lucide-react';
+import { Car, Calculator, FileText, TrendingUp, Calculator as CalcIcon, X, SplitSquareHorizontal, CreditCard, Upload } from 'lucide-react';
 
 interface SidebarProps {
   currentView: View;
   onChangeView: (view: View) => void;
   onOpenCalculator: () => void;
-  onCloseSidebar?: () => void; // New prop for mobile
+  onCloseSidebar?: () => void;
   theme: Theme;
 }
 
@@ -14,11 +15,12 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView, onOpenCalc
   
   const menuItems = [
     { id: 'models', label: 'موديلات السيارات', icon: Car },
-    { id: 'installments', label: 'أنظمة التقسيط (سريع)', icon: CreditCard }, // New
-    { id: 'comparison', label: 'مقارنة سيارات', icon: SplitSquareHorizontal }, // New
+    { id: 'installments', label: 'أنظمة التقسيط (سريع)', icon: CreditCard },
+    { id: 'comparison', label: 'مقارنة سيارات', icon: SplitSquareHorizontal },
     { id: 'loanCalc', label: 'حاسبة القروض', icon: Calculator },
     { id: 'priceAnalysis', label: 'أعلى وأقل سعر', icon: TrendingUp },
     { id: 'documents', label: 'الأوراق المطلوبة', icon: FileText },
+    { id: 'upload', label: 'رفع البيانات', icon: Upload }, // New Upload Button
   ];
 
   const btnBaseClass = `w-full flex items-center gap-4 p-4 transition-all duration-300 relative overflow-hidden group`;
@@ -47,7 +49,6 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView, onOpenCalc
         <h1 className="text-2xl font-bold font-mono tracking-tighter bg-clip-text text-transparent bg-gradient-to-br from-white to-gray-400">
           Four Brothers
         </h1>
-        {/* Mobile Close Button */}
         <button onClick={onCloseSidebar} className="md:hidden text-gray-400 hover:text-white">
           <X size={24} />
         </button>
@@ -83,7 +84,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView, onOpenCalc
       </nav>
 
       <div className="px-6 text-center text-xs opacity-40 mt-auto">
-         v1.0.0
+         v1.1.0
       </div>
     </div>
   );

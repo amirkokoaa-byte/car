@@ -21,19 +21,20 @@ export interface Car {
   year: number;
   name: string;
   description: string;
-  descLines: string[]; // 8 initial, expandable to 28
+  descLines: string[];
   categories: Category[];
   installment: InstallmentPlan;
   isAvailable: boolean;
   notes: string;
-  noteLines: string[]; // 5 lines
-  requiredPapers: string[]; // 10 lines
+  noteLines: string[];
+  requiredPapers: string[];
   createdAt: number;
+  images: string[]; // Updated to array of Base64 strings
 }
 
 export interface GlobalSettings {
   brands: string[];
-  documents: string[]; // Global documents list (10 items)
+  documents: string[];
 }
 
-export type View = 'models' | 'loanCalc' | 'priceAnalysis' | 'documents' | 'installments' | 'comparison';
+export type View = 'models' | 'loanCalc' | 'priceAnalysis' | 'documents' | 'installments' | 'comparison' | 'upload';
